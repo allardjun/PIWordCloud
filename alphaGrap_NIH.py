@@ -27,7 +27,7 @@ inputData = """
        ],
     },
     "include_fields": [
-            "Abstract","ProjectDetails"
+            "abstract_text","project_title"
         ],
         "offset":0,
         "limit":5,
