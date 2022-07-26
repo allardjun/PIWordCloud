@@ -22,7 +22,6 @@ inputData = """
          {
            "any_name": "",
            "first_name": "German",
-           "last_name": "Enciso"
          }
        ],
     },
