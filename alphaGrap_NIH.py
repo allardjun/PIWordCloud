@@ -27,7 +27,7 @@ inputData = """
        ],
     },
     "include_fields": [
-            "abstract_text","project_title"
+            "ApplId","AwardAmount","AbstractText"
         ],
         "offset":0,
         "limit":5,
