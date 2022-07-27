@@ -1,10 +1,6 @@
 import json
 import requests
 from requests.structures import CaseInsensitiveDict
-import pandas as pd
-
-from pprint import pprint
-
 
 def getSummaries_NIHReporter(PIName):
   
@@ -61,8 +57,6 @@ def getSummaries_NIHReporter(PIName):
 
     #print(text) 
     return text
-           
-
 
 if __name__ == "__main__":
     getSummaries_NIHReporter("Allard")
