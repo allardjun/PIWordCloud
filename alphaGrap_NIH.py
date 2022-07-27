@@ -11,20 +11,19 @@ headers = CaseInsensitiveDict()
 headers["Accept"] = "application/json"
 headers["Content-Type"] = "application/json"
 
-inputData = """
-{
+inputTemplate = '''
+{{
     "criteria":
-    {
+    {{
         "org_names": [
             "UNIVERSITY OF CALIFORNIA-IRVINE"
             ],
         "pi_names": [
-         {
-           "any_name": "",
-           "first_name": "German",
-         }
+         {{
+           "any_name": "{thisPIName}"
+         }}
        ],
-    },
+    }},
     "include_fields": [
             "ApplId","AwardAmount","AbstractText"
         ],
@@ -32,8 +31,10 @@ inputData = """
         "limit":5,
         "sort_field":"project_start_date",
         "sort_order":"desc"
-}
-"""
+}}
+'''
+
+inputData = inputTemplate.format(thisPIName="Enciso")
 
 # Interact with API
 responseData = requests.post(url, headers=headers, data=inputData)
