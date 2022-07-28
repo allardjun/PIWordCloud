@@ -18,6 +18,7 @@ def getSummaries_PubMed(PIName):
     # Loop over the retrieved articles
     text = []
     allKeywords = []
+    keywords = ""
     for article in results:
 
         # Extract and format information from the article
