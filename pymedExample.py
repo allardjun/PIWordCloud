@@ -3,10 +3,10 @@ from pymed import PubMed
 # Create a PubMed object that GraphQL can use to query
 # Note that the parameters are not required but kindly requested by PubMed Central
 # https://www.ncbi.nlm.nih.gov/pmc/tools/developers/
-pubmed = PubMed(tool="MyTool", email="my@email.address")
+pubmed = PubMed(tool="MyTool", email="jun.allard@uci.edu")
 
 # Create a GraphQL query in plain text
-query = 'Enciso[Author - Last]'
+query = '(Irvine[ad]) AND (enciso[Author])'
 
 # Execute the query against the API
 results = pubmed.query(query, max_results=500)
