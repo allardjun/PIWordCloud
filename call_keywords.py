@@ -67,12 +67,27 @@ def getKeywords(text):
 
     # N-best selection, keyphrases contains the 10 highest scored candidates as
     # (keyphrase, score) tuples
-        #keyphrases = extractor.get_n_best(n=10)
+    keyphrases = extractor.get_n_best(n=50)
+    #print(keyphrases)
 
     # print the n-highest (10) scored candidates
-    for (keyphrase, score) in extractor.get_n_best(n=35, stemming=True):
+    #for (keyphrase, score) in extractor.get_n_best(n=50, stemming=True):
         #print(keyphrase, score)
-        print(keyphrase)
+        #print(keyphrase)
+
+    # keyphrases_list = []
+    # # print the n-highest (10) scored candidates
+    # for (keyphrase, score) in extractor.get_n_best(n=50, stemming=True):
+    #     keyphrases_list.append(keyphrase)
+    #     #print(keyphrase, score)
+    #     #print(keyphrase)
+
+    keyphrases_list = []
+    for keyphrase in keyphrases:
+        #print(keyphrase[0])
+        keyphrases_list.append(keyphrase[0])
+
+    return keyphrases_list
 
 if __name__ == "__main__":
 
