@@ -9,6 +9,8 @@ from requests.structures import CaseInsensitiveDict
 import pandas as pd
 import pprint
 import pickle
+import xlsxwriter
+import os
 
 import interact_NIHReporter
 import interact_NSFAwardSearch
@@ -17,50 +19,71 @@ import call_keywords
 
 from PIWordCloud import PI 
 
-thisPI = PI("Read","Elizabeth")
+dfPIList = pd.read_excel('PIList.xlsx')
+PIList = list(dfPIList["PI Last Name"])
 
-fetch_tf = 1 # whether or not to get data from APIs (if no, try getting from file)
+if os.path.exists("output.txt"):
+    os.remove("output.txt")
 
-if fetch_tf:
+for iPI,PIRow in enumerate(PIList):
 
-    text = []
+    print(PIRow)
 
-    # get summaries using their APIs
-    text.append(interact_NIHReporter.getSummaries_NIHReporter(thisPI))
-    text.append(interact_NSFAwardSearch.getSummaries_NSFAwardSearch(thisPI))
-    text_PubMed, keywords_PubMed = interact_PubMed.getSummaries_PubMed(thisPI)
-    text.append(text_PubMed)
+    thisPI = PI(dfPIList["PI Last Name"][iPI],dfPIList["PI First Name"][iPI])
 
-    file = open("text.pckl","wb")
-    pickle.dump([text,keywords_PubMed],file)
+    fetch_tf = 1 # whether or not to get data from APIs (if no, try getting from file)
 
-else:
+    if fetch_tf:
 
-    with open("text.pckl", 'rb') as f:
-        text,keywords_PubMed = pickle.load(f)
+        text = []
 
+        # get summaries using their APIs
+        text.append(interact_NSFAwardSearch.getSummaries_NSFAwardSearch(thisPI))
+        text_NIH, keywords_NIH = interact_NIHReporter.getSummaries_NIHReporter(thisPI)
+        text.append(text_NIH)
+        text_PubMed, keywords_PubMed = interact_PubMed.getSummaries_PubMed(thisPI)
+        text.append(text_PubMed)
 
+        file = open("text.pckl","wb")
+        pickle.dump([text,keywords_PubMed],file)
 
-# ------ pre-process the text -----------
+    else:
 
-keywords_PubMed_flattened = [item for sublist in keywords_PubMed for item in sublist]
+        with open("text.pckl", 'rb') as f:
+            text,keywords_PubMed = pickle.load(f)
 
-# flatten
-flat_text = [item for sublist in text for item in sublist]
+    # ------ pre-process the text -----------
 
-flat2_text = ''
-for count, item in enumerate(flat_text):
-    #print("count={0}".format(count))
-    #print(item)
-    if item is not None:
-        flat2_text += item  
+    keywords_PubMed_flattened = [item for sublist in keywords_PubMed for item in sublist]
+    keywords_NIH_flattened = [item for sublist in keywords_NIH for item in sublist]
+    keywords_direct_flattened = keywords_PubMed_flattened + keywords_NIH_flattened
 
-# ------ generate keywords using Natural Language Processing -----------
+    # flatten
+    flat_text = [item for sublist in text for item in sublist]
 
-keyphrases_fromAnalysis = call_keywords.getKeywords(flat2_text)
+    flat2_text = ''
+    for count, item in enumerate(flat_text):
+        #print("count={0}".format(count))
+        #print(item)
+        if item is not None:
+            flat2_text += item  
 
-print(thisPI.firstName.upper() + thisPI.lastName.upper())
-for keyphrase in keyphrases_fromAnalysis:
-    print(keyphrase)
-for keyphrase in keywords_PubMed_flattened:
-    print(keyphrase.lower())
+    # ------ generate keywords using Natural Language Processing -----------
+
+    keyphrases_fromAnalysis = call_keywords.getKeywords(flat2_text)
+
+    # ------ output -----------
+
+    print(thisPI.firstName.upper() + " " + thisPI.lastName.upper())
+    for keyphrase in keyphrases_fromAnalysis:
+        print(keyphrase)
+    for keyphrase in keywords_direct_flattened:
+        print(keyphrase.lower())
+
+    with open('output.txt', 'a') as f:
+        f.write("\n")
+        f.write(thisPI.firstName.upper() + " " + thisPI.lastName.upper() + "\n")
+        for keyphrase in keyphrases_fromAnalysis:
+            f.write(keyphrase + "\n")
+        for keyphrase in keywords_direct_flattened:
+            f.write(keyphrase.lower() + "\n")

@@ -7,8 +7,6 @@ def getKeywords(text):
     # initialize keyphrase extraction model, here TopicRank
     extractor = pke.unsupervised.TopicRank()
 
-    
-
     # load the content of the document, here document is expected to be in raw
     # format (i.e. a simple text file) and preprocessing is carried out using spacy
     extractor.load_document(input=text, language='en')

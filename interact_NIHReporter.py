@@ -2,7 +2,7 @@ import json
 import requests
 from requests.structures import CaseInsensitiveDict
 
-import PIWordCloud
+from PIWordCloud import PI
 
 def getSummaries_NIHReporter(thisPI):
   
@@ -27,7 +27,7 @@ def getSummaries_NIHReporter(thisPI):
         ],
         }},
         "include_fields": [
-                "ProjectTitle","AbstractText"
+                "ProjectTitle","AbstractText","PrefTerms"
             ],
             "offset":0,
             "limit":50,
@@ -51,17 +51,23 @@ def getSummaries_NIHReporter(thisPI):
 
 
     text = []
+    allKeywords = []
 
     # return abstracts and titles in a list of strings
     for grant in response['results']:
-        thisAbstract = grant['abstract_text'].replace("\n", " ")
-        text.append(thisAbstract)
+        thisAbstract = grant['abstract_text']
+        if thisAbstract is not None:
+            text.append(thisAbstract.replace("\n", " "))
         thisTitle = grant['project_title']
         text.append(thisTitle)
+        thisTerms = grant['pref_terms']
+        text.append(thisTerms)
         #print(thisAbstract)
+        if thisTerms is not None:
+            allKeywords.append(thisTerms.split(";"))
 
     #print(text) 
-    return text
+    return text, allKeywords
 
 if __name__ == "__main__":
     getSummaries_NIHReporter(PI("Allard","Jun"))

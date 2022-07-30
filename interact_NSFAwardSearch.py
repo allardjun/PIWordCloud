@@ -24,8 +24,11 @@ def getSummaries_NSFAwardSearch(thisPI):
 
     # return abstracts and titles in a list of strings
     for grant in response['response']['award']:
-        thisAbstract = grant['abstractText'].replace("\n", " ")
-        text.append(thisAbstract)
+        #print(grant)
+        if 'abstractText' in grant:
+            thisAbstract = grant['abstractText']
+            if thisAbstract is not None:
+                text.append(thisAbstract.replace("\n", " "))
         thisTitle = grant['title']
         text.append(thisTitle)
         #print(thisAbstract)
@@ -34,4 +37,4 @@ def getSummaries_NSFAwardSearch(thisPI):
     return text
 
 if __name__ == "__main__":
-    getSummaries_NSFAwardSearch("Allard")
+    getSummaries_NSFAwardSearch(PI("Green","Kim"))
