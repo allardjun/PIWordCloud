@@ -2,7 +2,9 @@ import json
 import requests
 from requests.structures import CaseInsensitiveDict
 
-def getSummaries_NIHReporter(PIName):
+import PIWordCloud
+
+def getSummaries_NIHReporter(thisPI):
   
     url = "https://api.reporter.nih.gov/v2/projects/search"
 
@@ -19,7 +21,8 @@ def getSummaries_NIHReporter(PIName):
                 ],
             "pi_names": [
             {{
-            "any_name": "{thisPIName}"
+            "last_name": "{thisPILastName}",
+            "first_name": "{thisPIFirstName}"
             }}
         ],
         }},
@@ -33,7 +36,9 @@ def getSummaries_NIHReporter(PIName):
     }}
     '''
 
-    inputData = inputTemplate.format(thisPIName=PIName)
+    #print(thisPI.firstName)
+    #print(thisPI.lastName)
+    inputData = inputTemplate.format(thisPILastName=thisPI.lastName,thisPIFirstName=thisPI.firstName)
 
     # Interact with API
     responseData = requests.post(url, headers=headers, data=inputData)
@@ -59,4 +64,4 @@ def getSummaries_NIHReporter(PIName):
     return text
 
 if __name__ == "__main__":
-    getSummaries_NIHReporter("Allard")
+    getSummaries_NIHReporter(PI("Allard","Jun"))

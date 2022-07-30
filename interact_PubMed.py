@@ -1,15 +1,19 @@
 from pymed import PubMed
 
-def getSummaries_PubMed(PIName):
+import PIWordCloud
+
+def getSummaries_PubMed(thisPI):
 
     # Create a PubMed object that GraphQL can use to query
     # Note that the parameters are not required but kindly requested by PubMed Central
     # https://www.ncbi.nlm.nih.gov/pmc/tools/developers/
     pubmed = PubMed(tool="PhDProgramDirectoryMaker", email="jun.allard@uci.edu")
 
+    thisPIFirstInitial = thisPI.firstName[0]
     # Create a GraphQL query in plain text
-    queryTemplate = '((Irvine[Ad]) AND ("2017/01/01"[Date - Create] : "3000"[Date - Create])) AND ({thisPIName}[Author])'
-    query=queryTemplate.format(thisPIName=PIName)
+    queryTemplate = '((Irvine[Ad]) AND ("2017/01/01"[Date - Create] : "3000"[Date - Create])) AND ({thisPIName} {thisPIFirstInitial}*[Author])'
+    #queryTemplate = '((Irvine[Ad]) AND ("2017/01/01"[Date - Create] : "3000"[Date - Create])) AND ("Read E*"[Author])'
+    query=queryTemplate.format(thisPIName=thisPI.lastName,thisPIFirstInitial=thisPIFirstInitial)
 
     # Execute the query against the API
     results = pubmed.query(query, max_results=500)
@@ -46,4 +50,5 @@ def getSummaries_PubMed(PIName):
     return text, allKeywords
 
 if __name__ == "__main__":
-    getSummaries_PubMed("Lander")
+    print(getSummaries_PubMed(PI("Allard","Jun")))
+    

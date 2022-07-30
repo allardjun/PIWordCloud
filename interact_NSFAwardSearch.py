@@ -2,11 +2,13 @@ import json
 import requests
 from requests.structures import CaseInsensitiveDict
 
-def getSummaries_NSFAwardSearch(PIName):
+from PIWordCloud import PI
+
+def getSummaries_NSFAwardSearch(thisPI):
   
     url = "http://api.nsf.gov/services/v1/awards.json"
 
-    params = {"pdPIName": PIName, 
+    params = {"pdPIName": thisPI.lastName, 
         "awardeeName": "\"University+of+California-Irvine\"",
         "printFields": "title,abstractText,awardeeName"}
 

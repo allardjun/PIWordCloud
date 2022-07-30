@@ -1,29 +1,34 @@
-# Grab from APIs and extract keywords
+# Given the name of a PI at UCI, 
+# grab data from NIH Reporter, NSF Award Search, and PubMed,
+# then use Natural Language processing to extract keywords describing their research
+# Jun allardlab.com
 
 import json
 import requests
 from requests.structures import CaseInsensitiveDict
 import pandas as pd
 import pprint
+import pickle
 
 import interact_NIHReporter
 import interact_NSFAwardSearch
 import interact_PubMed
 import call_keywords
-import pickle
 
-PIName = "Allard"
+from PIWordCloud import PI 
 
-fetch_tf = 0 # whether or not to get data from APIs (if no, try getting from file)
+thisPI = PI("Read","Elizabeth")
+
+fetch_tf = 1 # whether or not to get data from APIs (if no, try getting from file)
 
 if fetch_tf:
 
     text = []
 
     # get summaries using their APIs
-    text.append(interact_NIHReporter.getSummaries_NIHReporter(PIName))
-    text.append(interact_NSFAwardSearch.getSummaries_NSFAwardSearch(PIName))
-    text_PubMed, keywords_PubMed = interact_PubMed.getSummaries_PubMed(PIName)
+    text.append(interact_NIHReporter.getSummaries_NIHReporter(thisPI))
+    text.append(interact_NSFAwardSearch.getSummaries_NSFAwardSearch(thisPI))
+    text_PubMed, keywords_PubMed = interact_PubMed.getSummaries_PubMed(thisPI)
     text.append(text_PubMed)
 
     file = open("text.pckl","wb")
@@ -40,19 +45,8 @@ else:
 
 keywords_PubMed_flattened = [item for sublist in keywords_PubMed for item in sublist]
 
-
-#pp = pprint.PrettyPrinter(indent=4)
-
-#print(len(text))
-
 # flatten
 flat_text = [item for sublist in text for item in sublist]
-
-#pp.pprint(flat_text)
-
-#print(len(flat_text))
-#print(flat_text[1])
-#print(flat_text[2])
 
 flat2_text = ''
 for count, item in enumerate(flat_text):
@@ -60,11 +54,12 @@ for count, item in enumerate(flat_text):
     #print(item)
     if item is not None:
         flat2_text += item  
-# ------ generate keywords -----------
+
+# ------ generate keywords using Natural Language Processing -----------
 
 keyphrases_fromAnalysis = call_keywords.getKeywords(flat2_text)
 
-print(PIName.upper())
+print(thisPI.firstName.upper() + thisPI.lastName.upper())
 for keyphrase in keyphrases_fromAnalysis:
     print(keyphrase)
 for keyphrase in keywords_PubMed_flattened:
