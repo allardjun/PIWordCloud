@@ -15,13 +15,14 @@ def make_wordcloud(keyphrases, PIName):
 
     #print(words_list)
 
-    words_dict = Counter(words_list)
+    words_dict = Counter(keyphrases)
 
     for excludeWord in excludeWords_list:
         try:
             words_dict.pop(excludeWord)
         except:
-            print("exclude: " + excludeWord + " not found\n")
+            pass
+            #print("exclude: " + excludeWord + " not found\n")
 
     with open("wordFrequencies.txt","w") as f:
         pprint.pprint(words_dict,stream=f)

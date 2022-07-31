@@ -16,7 +16,7 @@ import interact_NIHReporter
 import interact_NSFAwardSearch
 import interact_PubMed
 import call_keywords
-import make_wordcloud
+import wordcloud_tools
 
 from PIWordCloud import PI 
 
@@ -95,5 +95,8 @@ for iPI,PIRow in enumerate(PIList):
             for keyphrase in keywords_direct_flattened:
                 f.write(keyphrase.lower() + "\n")
 
-    # wordcloud to png
-    make_wordcloud(keyphrases_for_wordcloud, thisPI.lastName)
+    if len(keyphrases_for_wordcloud) > 0:
+        # wordcloud to png
+        wordcloud_tools.make_wordcloud(keyphrases_for_wordcloud, thisPI.lastName)
+    else:
+        print("No word found for " + thisPI.lastName)
