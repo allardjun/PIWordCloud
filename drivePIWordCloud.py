@@ -16,6 +16,7 @@ import interact_NIHReporter
 import interact_NSFAwardSearch
 import interact_PubMed
 import call_keywords
+import make_wordcloud
 
 from PIWordCloud import PI 
 
@@ -74,16 +75,25 @@ for iPI,PIRow in enumerate(PIList):
 
     # ------ output -----------
 
+    keyphrases_for_wordcloud = []
     print(thisPI.firstName.upper() + " " + thisPI.lastName.upper())
     for keyphrase in keyphrases_fromAnalysis:
         print(keyphrase)
+        keyphrases_for_wordcloud.append(keyphrase)
     for keyphrase in keywords_direct_flattened:
         print(keyphrase.lower())
+        keyphrases_for_wordcloud.append(keyphrase.lower())
 
-    with open('output.txt', 'a') as f:
-        f.write("\n")
-        f.write(thisPI.firstName.upper() + " " + thisPI.lastName.upper() + "\n")
-        for keyphrase in keyphrases_fromAnalysis:
-            f.write(keyphrase + "\n")
-        for keyphrase in keywords_direct_flattened:
-            f.write(keyphrase.lower() + "\n")
+
+    # one big fuck-off file with everyone
+    if 0:
+        with open('output.txt', 'a') as f:
+            f.write("\n")
+            f.write(thisPI.firstName.upper() + " " + thisPI.lastName.upper() + "\n")
+            for keyphrase in keyphrases_fromAnalysis:
+                f.write(keyphrase + "\n")
+            for keyphrase in keywords_direct_flattened:
+                f.write(keyphrase.lower() + "\n")
+
+    # wordcloud to png
+    make_wordcloud(keyphrases_for_wordcloud, thisPI.lastName)

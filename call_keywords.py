@@ -83,7 +83,7 @@ def getKeywords(text):
     keyphrases_list = []
     for keyphrase in keyphrases:
         #print(keyphrase[0])
-        keyphrases_list.append(keyphrase[0])
+        keyphrases_list.append(keyphrase[0].lstrip())
 
     return keyphrases_list
 
