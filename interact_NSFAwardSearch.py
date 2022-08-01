@@ -37,4 +37,4 @@ def getSummaries_NSFAwardSearch(thisPI):
     return text
 
 if __name__ == "__main__":
-    getSummaries_NSFAwardSearch(PI("Green","Kim"))
+    getSummaries_NSFAwardSearch(PI("Smith","Quinton"))

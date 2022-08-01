@@ -6,3 +6,4 @@ class PI:
     def __init__(self, lastName,firstName):
         self.lastName = lastName
         self.firstName = firstName
+        self.commonness = 0

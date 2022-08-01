@@ -23,14 +23,13 @@ from PIWordCloud import PI
 dfPIList = pd.read_excel('PIList.xlsx')
 PIList = list(dfPIList["PI Last Name"])
 
-if os.path.exists("output.txt"):
-    os.remove("output.txt")
-
 for iPI,PIRow in enumerate(PIList):
 
     print(PIRow)
 
     thisPI = PI(dfPIList["PI Last Name"][iPI],dfPIList["PI First Name"][iPI])
+    if thisPI.firstName == "Gina":
+        thisPI.commonness = 1
 
     fetch_tf = 1 # whether or not to get data from APIs (if no, try getting from file)
 

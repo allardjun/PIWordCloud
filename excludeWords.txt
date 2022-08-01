@@ -21,6 +21,7 @@ aged
 aim
 analysis
 analysis pipeline
+antiracist
 appearance
 applicant
 application
@@ -96,8 +97,10 @@ efficient
 elderly
 elements
 ensure
+equitable social
 evaluation
 event
+excellent students
 exhibits
 experience
 experimental
@@ -181,6 +184,7 @@ interest
 interesting systems
 internal
 investigation
+investigators
 job market
 justice
 key
@@ -198,7 +202,6 @@ laptop
 lateral
 lead
 leadership
-
 learning materials
 lectures
 levels
@@ -284,6 +287,7 @@ paper
 parent grant
 parent support
 participant
+participants
 peer review
 people
 performance

@@ -9,11 +9,14 @@ def getSummaries_PubMed(thisPI):
     # https://www.ncbi.nlm.nih.gov/pmc/tools/developers/
     pubmed = PubMed(tool="PhDProgramDirectoryMaker", email="jun.allard@uci.edu")
 
-    thisPIFirstInitial = thisPI.firstName[0]
     # Create a GraphQL query in plain text
-    queryTemplate = '((Irvine[Ad]) AND ("2017/01/01"[Date - Create] : "3000"[Date - Create])) AND ({thisPIName} {thisPIFirstInitial}*[Author])'
-    #queryTemplate = '((Irvine[Ad]) AND ("2017/01/01"[Date - Create] : "3000"[Date - Create])) AND ("Read E*"[Author])'
-    query=queryTemplate.format(thisPIName=thisPI.lastName,thisPIFirstInitial=thisPIFirstInitial)
+    if thisPI.commonness:
+        queryTemplate = '((Irvine[Ad]) AND ("2017/01/01"[Date - Create] : "3000"[Date - Create])) AND ({thisPIName} {thisPIFirstName}*[Author])'
+        query=queryTemplate.format(thisPIName=thisPI.lastName,thisPIFirstName=thisPI.firstName)
+    else:
+        thisPIFirstInitial = thisPI.firstName[0]
+        queryTemplate = '((Irvine[Ad]) AND ("2017/01/01"[Date - Create] : "3000"[Date - Create])) AND ({thisPIName} {thisPIFirstInitial}*[Author])'
+        query=queryTemplate.format(thisPIName=thisPI.lastName,thisPIFirstInitial=thisPIFirstInitial)
 
     # Execute the query against the API
     results = pubmed.query(query, max_results=500)
@@ -52,5 +55,5 @@ def getSummaries_PubMed(thisPI):
     return text, allKeywords
 
 if __name__ == "__main__":
-    print(getSummaries_PubMed(PI("Zhang","Jing")))
+    print(getSummaries_PubMed(PI("Smith","Quinton")))
     

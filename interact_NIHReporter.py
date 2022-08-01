@@ -70,4 +70,4 @@ def getSummaries_NIHReporter(thisPI):
     return text, allKeywords
 
 if __name__ == "__main__":
-    getSummaries_NIHReporter(PI("Allard","Jun"))
+    getSummaries_NIHReporter(PI("Smith","Quinton"))
