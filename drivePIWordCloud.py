@@ -20,15 +20,26 @@ import wordcloud_tools
 
 from PIWordCloud import PI 
 
-dfPIList = pd.read_excel('PIList.xlsx')
+loopThroughPIs = 1
+
+if loopThroughPIs == 1:
+    dfPIList = pd.read_excel('PIList.xlsx')
+else:
+    PILastName = 'Lee'
+    PIFirstName = 'Gina'
+    dfPIList = pd.DataFrame([[PILastName,PIFirstName]], columns=['PI Last Name','PI First Name'])
+        
 PIList = list(dfPIList["PI Last Name"])
+
 
 for iPI,PIRow in enumerate(PIList):
 
     print(PIRow)
 
     thisPI = PI(dfPIList["PI Last Name"][iPI],dfPIList["PI First Name"][iPI])
-    if thisPI.firstName == "Gina":
+    # print(thisPI.firstName)
+    # print(thisPI.firstName in ["Gina", 'Quentin'])
+    if thisPI.firstName in ["Gina", 'Quentin'] :
         thisPI.commonness = 1
 
     fetch_tf = 1 # whether or not to get data from APIs (if no, try getting from file)
@@ -58,6 +69,13 @@ for iPI,PIRow in enumerate(PIList):
     keywords_NIH_flattened = [item for sublist in keywords_NIH for item in sublist]
     keywords_direct_flattened = keywords_PubMed_flattened + keywords_NIH_flattened
 
+    # print("keywords PubMed: ")
+    # print(keywords_PubMed_flattened)
+    # print("\n")
+    # print("keywords NIH: ")
+    # print(keywords_NIH_flattened)
+    # print("\n")
+
     # flatten
     flat_text = [item for sublist in text for item in sublist]
 
@@ -67,6 +85,9 @@ for iPI,PIRow in enumerate(PIList):
         #print(item)
         if item is not None:
             flat2_text += item  
+
+    # print("flat2_text:")
+    # print(flat2_text)
 
     # ------ generate keywords using Natural Language Processing -----------
 
@@ -85,7 +106,7 @@ for iPI,PIRow in enumerate(PIList):
 
 
     # one big fuck-off file with everyone
-    if 0:
+    if 1:
         with open('output.txt', 'a') as f:
             f.write("\n")
             f.write(thisPI.firstName.upper() + " " + thisPI.lastName.upper() + "\n")
@@ -94,6 +115,7 @@ for iPI,PIRow in enumerate(PIList):
             for keyphrase in keywords_direct_flattened:
                 f.write(keyphrase.lower() + "\n")
 
+    
     if len(keyphrases_for_wordcloud) > 0:
         # wordcloud to png
         wordcloud_tools.make_wordcloud(keyphrases_for_wordcloud, thisPI.lastName)

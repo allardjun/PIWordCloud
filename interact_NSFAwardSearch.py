@@ -8,9 +8,17 @@ def getSummaries_NSFAwardSearch(thisPI):
   
     url = "http://api.nsf.gov/services/v1/awards.json"
 
-    params = {"pdPIName": thisPI.lastName, 
-        "awardeeName": "\"University+of+California-Irvine\"",
-        "printFields": "title,abstractText,awardeeName"}
+    if (hasattr(thisPI, 'commonness') and thisPI.commonness==1):
+        params = {"pdPIName": "\"" + thisPI.lastName + "+" + thisPI.firstName + "\"" , 
+            "awardeeName": "\"University+of+California-Irvine\"",
+            "printFields": "title,abstractText,awardeeName"}
+    else:
+        params = {"pdPIName": thisPI.lastName, 
+            "awardeeName": "\"University+of+California-Irvine\"",
+            "printFields": "title,abstractText,awardeeName"}
+
+
+    # print(params)
 
     responseData = requests.post(url,params=params)
     #print(responseData.status_code)
@@ -37,4 +45,6 @@ def getSummaries_NSFAwardSearch(thisPI):
     return text
 
 if __name__ == "__main__":
-    getSummaries_NSFAwardSearch(PI("Smith","Quinton"))
+    thisPI = PI("Lee","Gina")
+    thisPI.commonness = 1
+    getSummaries_NSFAwardSearch(thisPI)
