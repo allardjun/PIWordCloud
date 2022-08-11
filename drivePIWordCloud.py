@@ -113,9 +113,9 @@ if __name__ == "__main__":
     if 0:
         dfPIList = pd.read_excel('PIList2.xlsx')
     else:
-        PILastName = 'Carter'
-        PIFirstName = 'Paul'
-        dfPIList = pd.DataFrame([[PILastName,PIFirstName,0,1]],
+        PILastName = 'Oomen'
+        PIFirstName = 'Pim'
+        dfPIList = pd.DataFrame([[PILastName,PIFirstName,0,0]],
             columns=['PI Last Name','PI First Name','Commonness','LocalText'])
 
     makePIWordCloud(dfPIList) 
