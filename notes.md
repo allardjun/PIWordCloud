@@ -20,3 +20,12 @@
  * Change colors
  * Run on 6 test faculty
  * Run on everyone!
+
+# NAMES
+Scott Atwood	
+Michelle Digman	
+Timothy Downing	
+Christopher Hughes	
+Dequina Nicholas	
+Eric Mjolsness	
+Sunny Jiang

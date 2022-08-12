@@ -11,8 +11,10 @@ def getSummaries_PubMed(thisPI):
 
     # Create a GraphQL query in plain text
     if thisPI.commonness:
-        queryTemplate = '((Irvine[Ad]) AND ("2017/01/01"[Date - Create] : "3000"[Date - Create])) AND ({thisPIName} {thisPIFirstName}*[Author])'
+        queryTemplate = '((Irvine[Ad]) AND ("2017/01/01"[Date - Create] : "3000"[Date - Create])) AND ({thisPIName} {thisPIFirstName}[Author])'
+        #queryTemplate = '((Irvine[Ad]) AND ({thisPIName} {thisPIFirstName}[Author])'
         query=queryTemplate.format(thisPIName=thisPI.lastName,thisPIFirstName=thisPI.firstName)
+        print(query)
     else:
         thisPIFirstInitial = thisPI.firstName[0]
         queryTemplate = '((Irvine[Ad]) AND ("2017/01/01"[Date - Create] : "3000"[Date - Create])) AND ({thisPIName} {thisPIFirstInitial}*[Author])'
@@ -40,9 +42,9 @@ def getSummaries_PubMed(thisPI):
             abstract = article.abstract
 
             # Show information about the article
-            # print(
-            #     f'{publication_date} - {title}\nKeywords: "{keywords}"\n{abstract}\n'
-            # )
+            print(
+                f'{publication_date} - {title}\nKeywords: "{keywords}"\n{abstract}\n'
+            )
 
             # load into text string
             text.append(title)

@@ -112,5 +112,5 @@ def makeVignette(thisPI):
 
 if __name__ == "__main__":
 
-    thisPI = PI("Shi", "Xiaoyu")
+    thisPI = PI("Yu", "Jin")
     makeVignette(thisPI)
