@@ -62,10 +62,12 @@ def makeVignette(thisPI):
     img_draw = ImageDraw.Draw(img_title)
     # Font selection and size selection
     myFont = ImageFont.truetype("Arial.ttf", 200)
-    title_size = myFont.getsize(title)
-    myFont = ImageFont.truetype("Arial.ttf", math.floor(title_long_side*200/title_size[0]))
+    title_size = myFont.getbbox(title)
+    print(title_size)
 
-    title_short_side = myFont.getsize(title)[1]+10
+    myFont = ImageFont.truetype("Arial.ttf", math.floor(title_long_side*200/title_size[2]))
+
+    title_short_side = myFont.getbbox(title)[3]+10
     print(title_short_side)
     if photo_true == 1:
         if vignette_is_landscape:
@@ -81,13 +83,10 @@ def makeVignette(thisPI):
     # Decide the text location, color and font
     #d1.text((65, 10), "Sample text", fill =(255, 0, 0),font=myFont)
     img_draw.text((title_long_side/2, 0), title, align="center",anchor='ma', fill =(0, 0, 0),font=myFont)
-    img_title.crop((0,0,title_long_side,title_short_side))
-
-    img_title.save(thisPI.lastName + '.png')
+    img_title_cropped = img_title.crop((0,0,title_long_side,title_short_side))
  
-
     if vignette_is_landscape:
-        img_title = img_title.rotate(angle=-90,expand=True)
+        img_title_cropped = img_title_cropped.rotate(angle=-90,expand=True)
 
     # -------  Merge
     image_vignette = Image.new("RGBA", (vignette_width,vignette_height))
@@ -96,16 +95,16 @@ def makeVignette(thisPI):
     if vignette_is_landscape:
         if photo_true:
             image_vignette.paste(photo, (img_wordcloud.width, 0))
-            image_vignette.paste(img_title,(img_wordcloud.width+photo_width,0))
+            image_vignette.paste(img_title_cropped,(img_wordcloud.width+photo_width,0))
         else:
-            image_vignette.paste(img_title,(img_wordcloud.width,0))
+            image_vignette.paste(img_title_cropped,(img_wordcloud.width,0))
 
     else:
         if photo_true:
             image_vignette.paste(photo, (0, img_wordcloud.height))
-            image_vignette.paste(img_title,(0,img_wordcloud.height+photo_height))
+            image_vignette.paste(img_title_cropped,(0,img_wordcloud.height+photo_height))
         else:
-            image_vignette.paste(img_title,(0,img_wordcloud.height))
+            image_vignette.paste(img_title_cropped,(0,img_wordcloud.height))
 
 
     image_vignette.save("results/vignettes/" + thisPI.lastName + ".png")
