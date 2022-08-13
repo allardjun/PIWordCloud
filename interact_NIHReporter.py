@@ -2,7 +2,7 @@ import json
 import requests
 from requests.structures import CaseInsensitiveDict
 
-from PIWordCloud import PI
+from piwc_PIWordCloud import PI
 
 def getSummaries_NIHReporter(thisPI):
   

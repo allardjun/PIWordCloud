@@ -1,6 +1,6 @@
 from pymed import PubMed
 
-from PIWordCloud import PI
+from piwc_PIWordCloud import PI
 
 def getSummaries_PubMed(thisPI):
 
