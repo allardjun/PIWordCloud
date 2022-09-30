@@ -41,6 +41,7 @@ bachelor&apos
 back
 base
 behavior
+broader impacts review criteria
 budgets
 california
 cancer center support grant
@@ -125,6 +126,7 @@ finding
 findings
 follow-up
 follow-up mentoring
+follow-up studies
 formation
 fostering
 foundations
@@ -150,6 +152,7 @@ households
 housing
 hrs
 human resources
+human existence
 impact
 importance
 important
@@ -234,6 +237,7 @@ merit-based incentive payment system
 meter
 methodology
 methods
+midlife women transition
 minority
 mission
 modality
@@ -255,6 +259,7 @@ new role
 novel
 novel marker
 novel strategies
+nsf
 number
 numbers
 numerous distinct cell types
@@ -288,6 +293,7 @@ parent grant
 parent support
 participant
 participants
+particular
 peer review
 people
 performance
@@ -539,3 +545,12 @@ years
 young adult
 young adults
 &apos alzheimer&apos
+potential misunderstandings
+justice system
+jurors
+forensic sciences
+adult witness
+court statements
+children
+hearsay evidence
+jury duty

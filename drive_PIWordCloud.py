@@ -59,12 +59,12 @@ def make_PIWordCloud(dfPIList):
                 keywords_NIH_flattened = [item for sublist in keywords_NIH for item in sublist]
                 keywords_direct_flattened = keywords_PubMed_flattened + keywords_NIH_flattened
 
-                file = open("text.pckl","wb")
+                file = open("results/text/" + thisPI.lastName + ".pckl","wb")
                 pickle.dump([text,keywords_PubMed],file)
 
         else:
 
-            with open("text.pckl", 'rb') as f:
+            with open("results/text/" + thisPI.lastName + ".pckl", 'rb') as f:
                 text,keywords_PubMed = pickle.load(f)
 
         # ------ pre-process the text -----------
@@ -82,7 +82,7 @@ def make_PIWordCloud(dfPIList):
 
         # ------ generate keywords using Natural Language Processing -----------
 
-        keyphrases_fromAnalysis = piwc_keywords.getKeywords(flat2_text)
+        keyphrases_fromAnalysis = piwc_keywords.get_keywords(flat2_text)
 
         # ------ output -----------
 
@@ -96,7 +96,7 @@ def make_PIWordCloud(dfPIList):
             keyphrases_for_wordcloud.append(keyphrase.lower())
 
         # one big file with everyone
-        if 1:
+        if 0:
             with open('output.txt', 'a') as f:
                 f.write("\n")
                 f.write(thisPI.firstName.upper() + " " + thisPI.lastName.upper() + "\n")
@@ -114,8 +114,8 @@ def make_PIWordCloud(dfPIList):
 
 if __name__ == "__main__":
 
-    if 0:
-        dfPIList = pd.read_excel('PIList2.xlsx')
+    if 1:
+        dfPIList = pd.read_excel('PIList.xlsx')
     else:
         PILastName = 'Yu'
         PIFirstName = 'Jin'

@@ -1,7 +1,7 @@
 import pke
 
 def get_keywords(text):
-'''Given a big block of text, extract some keywords (key phrases) as a list'''
+    '''Given a big block of text, extract some keywords (key phrases) as a list'''
 
     verbose = 0
 
