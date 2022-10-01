@@ -31,8 +31,9 @@ def make_vignettes_batch(dfPIList):
         print(dfPIList.iloc[iPI])
 
         thisPI = PI(dfPIList["PI Last Name"][iPI],dfPIList["PI First Name"][iPI])
+        thisPI.isMCSB = dfPIList["isMCSB"][iPI]
 
-        piwc_vignette.makeVignette(thisPI)
+        piwc_vignette.make_vignette(thisPI)
         
 
 if __name__ == "__main__":
