@@ -23,7 +23,7 @@ def make_vignette(thisPI):
         return
 
     img_logo = Image.open(logo_file)
-    
+    logo_ratio = img_logo.height/img_logo.width
 
     # ---------- DETERMINE OUTPUT ATTRIBUTES SET BY PHOTO STATS
 
@@ -87,37 +87,54 @@ def make_vignette(thisPI):
 
         myFont = ImageFont.truetype("Arial.ttf", math.floor(200*title_long_side/title_size_guess[2]))
 
-        title_short_side = myFont.getbbox(title)[3]+10
+        title_short_side = myFont.getbbox(title)[3]+10 # nudge to give a margin between photo and text
         print(title_short_side)
-        if photo_true == 1:
-            if vignette_is_landscape:
-                vignette_width = img_wordcloud.width+photo_width+title_short_side
-            else:
-                vignette_height = img_wordcloud.height+photo_height+title_short_side    
-        else:
-            if vignette_is_landscape:
-                vignette_width = img_wordcloud.width+title_short_side
-            else:
-                vignette_height = img_wordcloud.height+title_short_side    
+  
+        # Decide the text location, color and font
+        img_draw.text((title_long_side/2, 0), title, align="center",anchor='ma', fill =(0, 0, 0),font=myFont)
 
     if thisPI.isMCSB==1 and longNameTF==0: # the name and logo will be co-aligned TODO
         name_ratio = title_size_guess[3]/title_size_guess[2]
-        logo_ratio = img_logo.width/img_logo.height
+        
         y_name = logo_ratio*name_ratio*title_long_side/(logo_ratio+name_ratio)
         y_logo = y_name
         x_name = logo_ratio*title_long_side/(logo_ratio+name_ratio)
         x_logo = name_ratio*title_long_side/(logo_ratio+name_ratio)
 
-    # Decide the text location, color and font
-    img_draw.text((title_long_side/2, 0), title, align="center",anchor='ma', fill =(0, 0, 0),font=myFont)
+        title_short_side = math.floor(y_name)+10 # nudge to give a margin between photo and text
+        myFont = ImageFont.truetype("Arial.ttf", math.floor(200*x_name/title_size_guess[2])) 
+        print('Target size of name text:' + str(myFont.getbbox(title)))
+        # resize logo
+        logo_resized = img_logo.resize((math.ceil(x_logo), math.ceil(y_logo)))
+        
+        # Decide the text location, color and font
+        img_draw.text((math.floor(x_name/2), 0), title, align="center",anchor='ma', fill =(0, 0, 0),font=myFont)
+        img_title.paste(logo_resized, (math.floor(x_name),0))
+
+    if thisPI.isMCSB==1 and longNameTF==1: # put the logo on the wordcloud
+        logo_resized = img_logo.resize((math.ceil(x_logo), math.ceil(y_logo)))
+
     img_title_cropped = img_title.crop((0,0,title_long_side,title_short_side))
 
     if vignette_is_landscape:
         img_title_cropped = img_title_cropped.rotate(angle=-90,expand=True)
 
     # -------  Merge the 2 or 3 images and save
+
+    if photo_true == 1:
+        if vignette_is_landscape:
+            vignette_width = img_wordcloud.width+photo_width+title_short_side
+        else:
+            vignette_height = img_wordcloud.height+photo_height+title_short_side    
+    else:
+        if vignette_is_landscape:
+            vignette_width = img_wordcloud.width+title_short_side
+        else:
+            vignette_height = img_wordcloud.height+title_short_side  
+
     image_vignette = Image.new("RGBA", (vignette_width,vignette_height))
     image_vignette.paste(img_wordcloud)
+
 
     if vignette_is_landscape:
         if photo_true:
@@ -140,5 +157,5 @@ def make_vignette(thisPI):
 if __name__ == "__main__":
 
     thisPI = PI("Yu", "Jin")
-    thisPI.isMCSB = 0
+    thisPI.isMCSB = 1
     make_vignette(thisPI)
