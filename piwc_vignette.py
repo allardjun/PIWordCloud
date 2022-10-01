@@ -112,7 +112,11 @@ def make_vignette(thisPI):
         img_title.paste(logo_resized, (math.floor(x_name),0))
 
     if thisPI.isMCSB==1 and longNameTF==1: # put the logo on the wordcloud
-        logo_resized = img_logo.resize((math.ceil(x_logo), math.ceil(y_logo)))
+        logo_new_size = (math.floor(0.75*img_wordcloud.width),math.ceil(0.75*img_wordcloud.width*logo_ratio))
+        logo_resized = img_logo.resize((logo_new_size[0],logo_new_size[1]))
+        img_wordcloud.paste(logo_resized,(0,img_wordcloud.height-logo_new_size[1]-10))
+
+    # ------ ADJUSTMENTS AND MERGINS COMMON TO ALL MODES
 
     img_title_cropped = img_title.crop((0,0,title_long_side,title_short_side))
 
@@ -156,6 +160,6 @@ def make_vignette(thisPI):
 
 if __name__ == "__main__":
 
-    thisPI = PI("Yu", "Jin")
+    thisPI = PI("Rodriguez-Verdugo", "Alejandra")
     thisPI.isMCSB = 1
     make_vignette(thisPI)
